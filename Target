@@ -1,3 +1,4 @@
+import random
 import turtle as t
 
 alex = t.Turtle()
@@ -22,3 +23,7 @@ def target(ring):
                 size = size - 20
                 ring = ring - 2
         alex.dot(50,"red")
+        
+def shoot():
+    x = random.random()
+    print(x)
