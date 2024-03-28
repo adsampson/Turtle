@@ -1,0 +1,24 @@
+import turtle as t
+
+alex = t.Turtle()
+window = t.Screen()
+window.bgcolor("light gray")
+
+def target(ring):
+    if (ring%2==0):
+        size = 50 +(ring*20)
+        while ring > 0:
+            for color in ["black","white"]:
+                alex.dot(size,color)
+                size = size - 20
+                ring = ring - 2
+        alex.dot(50,"red")
+    else:
+        size = 50 +(ring*20)
+        alex.dot((size+5),"black")
+        while ring > 0:
+            for color in ["white","black"]:
+                alex.dot(size,color)
+                size = size - 20
+                ring = ring - 2
+        alex.dot(50,"red")
