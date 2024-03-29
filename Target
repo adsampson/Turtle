@@ -4,6 +4,10 @@ import turtle as t
 alex = t.Turtle()
 window = t.Screen()
 window.bgcolor("light gray")
+alex.speed(5)
+alex.hideturtle()
+
+ring = int(input("number plz "))
 
 def target(ring):
     if (ring%2==0):
@@ -12,7 +16,7 @@ def target(ring):
             for color in ["black","white"]:
                 alex.dot(size,color)
                 size = size - 20
-                ring = ring - 2
+                ring = ring - 1
         alex.dot(50,"red")
     else:
         size = 50 +(ring*20)
@@ -21,9 +25,18 @@ def target(ring):
             for color in ["white","black"]:
                 alex.dot(size,color)
                 size = size - 20
-                ring = ring - 2
+                ring = ring - 1
         alex.dot(50,"red")
         
-def shoot():
-    x = random.random()
-    print(x)
+def shoot(arrow):
+    while arrow > 0:
+        turn = random.randrange(0,360)
+        dist = random.randrange(0,ring*20)
+        alex.penup()
+        alex.left(turn)
+        alex.forward(dist)
+        alex.pendown()
+        alex.dot(15,"orange")
+        alex.penup()
+        alex.back(dist)
+        arrow -= 1
