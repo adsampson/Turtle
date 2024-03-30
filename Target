@@ -7,31 +7,31 @@ window.bgcolor("light gray")
 alex.speed(7)
 alex.hideturtle()
 
-ring = int(input("number plz "))
+ring = int(input("How many rings do you want? "))
 
 def target(ring):
     if (ring%2==0):
-        size = 50 +(ring*20)
+        size = 50 +(ring*40)
         while ring > 0:
             for color in ["black","white"]:
                 alex.dot(size,color)
-                size = size - 20
+                size = size - 40
                 ring = ring - 1
-        alex.dot(50,"red")
+        alex.dot(60,"red")
     else:
-        size = 50 +(ring*20)
+        size = 50 +(ring*40)
         alex.dot((size+5),"black")
         while ring > 0:
             for color in ["white","black"]:
                 alex.dot(size,color)
-                size = size - 20
+                size = size - 40
                 ring = ring - 1
         alex.dot(50,"red")
         
 def shoot(arrow):
     while arrow > 0:
         turn = random.randrange(0,360)
-        dist = random.randrange(0,35+ring*10)
+        dist = random.randrange(0,40+ring*20)
         alex.penup()
         alex.left(turn)
         alex.forward(dist)
