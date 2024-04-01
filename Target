@@ -12,6 +12,7 @@ ring = int(input("How many rings do you want? "))
 def target(ring):
     if (ring%2==0):
         size = 50 +(ring*20)
+        alex.dot((size+5),"white")
         while ring > 0:
             for color in ["black","white"]:
                 alex.dot(size,color)
