@@ -1,43 +1,71 @@
+import turtle as  t
 import random
-import turtle as t
 
-alex = t.Turtle()
-window = t.Screen()
-window.bgcolor("light gray")
-alex.speed(7)
-alex.hideturtle()
+screen = t.Screen()
 
-ring = int(input("How many rings do you want? "))
+t1 = t.Turtle()
+t1.color("red")
+t1.penup()
 
-def target(ring):
-    if (ring%2==0):
-        size = 50 +(ring*20)
-        alex.dot((size+5),"white")
-        while ring > 0:
-            for color in ["black","white"]:
-                alex.dot(size,color)
-                size = size - 20
-                ring = ring - 1
-        alex.dot(50,"red")
-    else:
-        size = 50 +(ring*20)
-        alex.dot((size+5),"black")
-        while ring > 0:
-            for color in ["white","black"]:
-                alex.dot(size,color)
-                size = size - 20
-                ring = ring - 1
-        alex.dot(50,"red")
-        
-def shoot(arrow):
-    while arrow > 0:
-        turn = random.randrange(0,360)
-        dist = random.randrange(0,40+ring*10)
-        alex.penup()
-        alex.left(turn)
-        alex.forward(dist)
-        alex.pendown()
-        alex.dot(12,"dark orange")
-        alex.penup()
-        alex.back(dist)
-        arrow -= 1
+t2 = t.Turtle()
+t2.color("blue")
+t2.penup()
+
+t3 = t.Turtle()
+t3.color("orange")
+t3.penup()
+
+t4 = t.Turtle()
+t4.color("light green")
+t4.penup()
+
+t5 = t.Turtle()
+t5.color("pink")
+t5.penup()
+
+def setup():
+    t1.goto(-250, 200)
+    t1.write("start")
+    t1.pendown()
+    t1.goto(-250, -200)
+    t1.penup()
+    t1.goto(250, 200)
+    t1.write("finish")
+    t1.pendown()
+    t1.goto(250, -200)
+    t1.pendown()
+    t1.penup()
+    t1.goto(-250, 100)
+    t1.pendown()
+    
+    t2.goto(-250, 200)
+    t2.pendown()
+    t3.goto(-250, -200)
+    t3.pendown()
+    t4.goto(-250, 0)
+    t4.pendown()
+    t5.goto(-250, -100)
+    t5.pendown()
+
+racers = [t1, t2, t3, t4, t5]  
+
+def race():
+    while True:        
+        for racer in racers:
+            if racer.xcor()<=200:
+                dist = random.randrange(0,75)
+                racer.forward(dist)
+                racer.write(xcor())
+            else:
+                pass
+
+def winner():
+    for racer in racers:
+        if racer.xcor()>=200:
+            racer.dot(75)      
+        else:
+            racer.write("looser")
+            
+setup()
+race()
+winner()
