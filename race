@@ -1,9 +1,12 @@
+librareis that are needed
 import turtle as  t
 import random as r
 
+#This is were the screen you see is made
 screen = t.Screen()
 screen.bgcolor("black")
 
+#This is were the turtles are created
 t1 = t.Turtle(shape = "turtle")
 t1.color("white")
 t2 = t.Turtle(shape = "turtle")
@@ -15,10 +18,10 @@ t4.color("dark green")
 t5 = t.Turtle(shape = "turtle")
 t5.color("hot pink")
 
+#All turtles are on a list so I can have all turtles race easaly 
 turtles = [t1,t2,t3,t4,t5]
 
-x = True
-
+#This funtion craetes and lables the start and finish lines. 
 def start_finish_line():
     t1.penup()
     t1.pensize(5)
@@ -36,6 +39,7 @@ def start_finish_line():
     t1.pensize(1)
     turt_setup()
 
+#This funtion will put the turtles on the start line
 def turt_setup():
     y_cor = 200
     for racer in turtles:
@@ -43,40 +47,40 @@ def turt_setup():
         racer.goto(-250, y_cor)
         racer.pendown()
         y_cor-=100
-    race(x)
+    race()
 
-def winner(x):
-    for racer in turtles:
-        if racer.xcor()>=250:
-            you_win()
-    
-
-def race(x):
+#This funtion will move the turtles a random amout
+def race():
+    x = True    
     while x==True:
         for racer in turtles:
             if x==True:
                 dist = r.randrange(0,65)
                 racer.forward(dist)
-                winner(x)
-                    
-def you_win():
+                winner()
+
+#This funtion checks to see if the turtles passes the finish after they move
+def winner():
     for racer in turtles:
         if racer.xcor()>=250:
-            racer.write("I Win.")
-            for x in range(7):
-                racer.speed(5)
-                racer.penup()
-                dist = r.randrange(20,65)
-                turn = r.randrange(50,100)
-                racer.left(turn)
-                racer.forward(dist)
-                racer.dot(5,"yellow")
-                racer.backward(dist)
-                racer.speed(3)
-        else:
-            racer.write("I Lost")
+            you_win()
+
+#This funtion declairs the winner as decided by winner()                 
+def you_win():
+    racer.write("I WIN!")
+    for x in range(7):
+        racer.speed(5)
+        racer.penup()
+        dist = r.randrange(20,65)
+        turn = r.randrange(50,100)
+        racer.left(turn)
+        racer.forward(dist)
+        racer.dot(5,"yellow")
+        racer.backward(dist)
+        racer.speed(3)
     restart()
 
+#This funtion gives the user a chance to do the race again
 def restart():
     yes_no = input("Do you wish to race again? ")
     if yes_no == "yes":
@@ -84,14 +88,11 @@ def restart():
             racer.clear()
             racer.setheading(0)
         start_finish_line()
-        turt_setup(x_cor,y_cor)
-        race(x)
-        you_win()
-        restart()
     elif yes_no == "no":
         exit()
     else:
         print("Sory that is not an option, the options are 'yes' and 'no'. Please try again.")
         restart()
 
+#Program loop, each funtion calls the next one needed.
 start_finish_line()
