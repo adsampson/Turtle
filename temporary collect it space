@@ -12,50 +12,60 @@
 #Import Libraries
 import turtle as t
 import time
-
-screen = t.Screen()
-
 #Global Variable
 jeff = t.Turtle()
-jeff.pendown()
-jeff.goto(0,0)
-#Lists
+jeff.penup()
 
+t1 = t.Turtle()
+t2 = t.Turtle()
+t3 = t.Turtle()
+t4 = t.Turtle()
+screen = t.Screen()
+
+#Lists
+foods = []
 #####Functions#####
 
 ##Core Game Functions##
 
 #Create Score
 #Create the score field on the top of the screen
-
 def setup_score():
-    pass
+    pass    
 
 #Create Player
 #Create and draw player onto the screen in starting position
 def create_player():
     jeff.color("green")
-    jeff.pendown()
-
 #Move Player Left
 #Move player left in response to arrow key
 def left():
     jeff.backward(10)
+    check_horizontal_bounds()
 
 #Move Player Right
 #Move player right in response to arrow key
 def right():
     jeff.forward(10)
+    check_horizontal_bounds()
 
 #Check Player Screen Bounds (Horizontal)
 #Check to see if the player is within the vertical bounds, if not set the player to the bound
-def check_horiztonal_bounds():
-    pass
+def check_horizontal_bounds():
+    if int(jeff.xcor())<-185:
+        jeff.goto(-185,0)
+    if int(jeff.xcor())>190:
+        jeff.goto(190,0)
 
 #Create Collectable
 #Use a for loop to create and store your collectables into a list
 def create_collectables():
-    pass
+    x_cor = -150
+    for food in foods:
+        food.color("gray")
+        foods.append(food)
+        food.goto(100,x_cor)
+        x_cor-=75
 
 #Move Collectable 
 #Go through your list of collectables and move each item
@@ -97,11 +107,12 @@ def game_over():
 #####Setup Function Calls#####
 #Use this section to call any core functions that are only called once and help to setup the turtle/game environment
 create_player()
-screen.onkey(left , "Left")
-screen.onkey(right , 'Right')
+screen.onkey(left , "a")
+screen.onkey(right , 'd')
+create_collectables()
 screen.listen()
 
 #####Core Game Loop#####
 #Use this while loop to create your game loop, define logic and call above functions
-while True:
-    pass
+for x in range(100):
+   check_horizontal_bounds()
