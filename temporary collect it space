@@ -1,0 +1,107 @@
+##############
+#Turtle - Collect It Game
+#Name
+#Date
+#
+#Task: To create a simple game where the player controls a turtle that can move left and right while trying to collect falling items.
+##############
+
+#####Setup#####
+#Use this section to organize global data
+
+#Import Libraries
+import turtle as t
+import time
+
+screen = t.Screen()
+
+#Global Variable
+jeff = t.Turtle()
+jeff.pendown()
+jeff.goto(0,0)
+#Lists
+
+#####Functions#####
+
+##Core Game Functions##
+
+#Create Score
+#Create the score field on the top of the screen
+
+def setup_score():
+    pass
+
+#Create Player
+#Create and draw player onto the screen in starting position
+def create_player():
+    jeff.color("green")
+    jeff.pendown()
+
+#Move Player Left
+#Move player left in response to arrow key
+def left():
+    jeff.backward(10)
+
+#Move Player Right
+#Move player right in response to arrow key
+def right():
+    jeff.forward(10)
+
+#Check Player Screen Bounds (Horizontal)
+#Check to see if the player is within the vertical bounds, if not set the player to the bound
+def check_horiztonal_bounds():
+    pass
+
+#Create Collectable
+#Use a for loop to create and store your collectables into a list
+def create_collectables():
+    pass
+
+#Move Collectable 
+#Go through your list of collectables and move each item
+def move_collectable():
+    pass
+
+#Check Collectable Screen Bounds (Vertical)
+#Check to see if a falling item is below vertical bounds, if so move back to the top
+#Must pass the item in as an arguement
+def check_vertical_bounds(item):
+    pass
+
+#Check Player Catch Collectable
+#Pass in a collectable item from a list and determine if it is in contact/proximity with the player
+#Must pass the item in as an arguement
+def check_collectable(item):
+    pass
+
+#Update Score
+#If contact between collectable and player is made, update global score
+def update_score(points):
+    pass
+
+##Extendable Functions##
+
+#Intro Screen
+def start_screen():
+    pass
+
+#Life Tracker
+def update_lives():
+    pass
+
+#Game Over Screen
+def game_over():
+    pass
+
+
+#####Setup Function Calls#####
+#Use this section to call any core functions that are only called once and help to setup the turtle/game environment
+create_player()
+screen.onkey(left , "Left")
+screen.onkey(right , 'Right')
+screen.listen()
+
+#####Core Game Loop#####
+#Use this while loop to create your game loop, define logic and call above functions
+while True:
+    pass
