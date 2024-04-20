@@ -11,10 +11,12 @@
 
 #Import Libraries
 import turtle as t
-import time
+import random as r
+import easygui as easy
 #Global Variable
 jeff = t.Turtle()
-jeff.penup()
+jeb = t.Turtle()
+bob = t.Turtle()
 
 t1 = t.Turtle()
 t2 = t.Turtle()
@@ -23,7 +25,8 @@ t4 = t.Turtle()
 screen = t.Screen()
 
 #Lists
-foods = []
+foods = [t1,t2,t3,t4]
+score = []
 #####Functions#####
 
 ##Core Game Functions##
@@ -31,63 +34,103 @@ foods = []
 #Create Score
 #Create the score field on the top of the screen
 def setup_score():
-    pass    
+    jeb.penup()
+    jeb.ht()
+    jeb.goto(-210,-10)
+    jeb.write("score : ")
+    jeb.goto(-200,-25)
+    jeb.write(0)
 
+def setup_lives():
+    bob.penup()
+    bob.ht()
+    bob.goto(210,-10)
+    bob.write("Lives : ")
+    bob.goto(220,-25)
+    bob.write(5)
+    
 #Create Player
 #Create and draw player onto the screen in starting position
 def create_player():
-    jeff.color("green")
+    jeff.color("orange")
+    jeff.penup()
 #Move Player Left
 #Move player left in response to arrow key
 def left():
-    jeff.backward(10)
+    jeff.backward(7)
     check_horizontal_bounds()
+    move_collectable()
 
 #Move Player Right
 #Move player right in response to arrow key
 def right():
-    jeff.forward(10)
+    jeff.forward(7)
     check_horizontal_bounds()
+    move_collectable()
 
 #Check Player Screen Bounds (Horizontal)
 #Check to see if the player is within the vertical bounds, if not set the player to the bound
 def check_horizontal_bounds():
-    if int(jeff.xcor())<-185:
-        jeff.goto(-185,0)
-    if int(jeff.xcor())>190:
-        jeff.goto(190,0)
+    if int(jeff.xcor())<-165:
+        jeff.goto(-165,0)
+    if int(jeff.xcor())>170:
+        jeff.goto(170,0)
 
 #Create Collectable
 #Use a for loop to create and store your collectables into a list
 def create_collectables():
-    x_cor = -150
     for food in foods:
-        food.color("gray")
-        foods.append(food)
-        food.goto(100,x_cor)
-        x_cor-=75
+        food.ht()
+        food.setheading(-90)
+        food.penup()
+        rand_y = r.randrange(200,400)
+        rand_x = r.randrange(-165,165)
+        food.goto(rand_x,rand_y)
+        food.showturtle()
+        food.color("lime green")
 
 #Move Collectable 
 #Go through your list of collectables and move each item
 def move_collectable():
-    pass
+    for food in foods:
+        dist = r.randrange(3,5)
+        food.forward(dist)
+        check_vertical_bounds()
+        check_collectable()
 
 #Check Collectable Screen Bounds (Vertical)
 #Check to see if a falling item is below vertical bounds, if so move back to the top
 #Must pass the item in as an arguement
-def check_vertical_bounds(item):
-    pass
+def check_vertical_bounds():
+    for food in foods:
+        if int(food.ycor())<=-30:
+            update_lives(lives)
+            food.ht()
+            rand_y = r.randrange(200,400)
+            rand_x = r.randrange(-165,170)
+            food.goto(rand_x,rand_y)
+            food.showturtle()
+        
 
 #Check Player Catch Collectable
 #Pass in a collectable item from a list and determine if it is in contact/proximity with the player
 #Must pass the item in as an arguement
-def check_collectable(item):
-    pass
+def check_collectable():
+    for food in foods:
+        if int(food.distance(jeff))<=5:
+            update_score()
+            food.ht()
+            rand_y = r.randrange(200,500)
+            rand_x = r.randrange(-185,185)
+            food.goto(rand_x,rand_y)
+            food.showturtle()
 
 #Update Score
 #If contact between collectable and player is made, update global score
-def update_score(points):
-    pass
+def update_score():
+    score.append(1)
+    jeb.dot(30, "white")
+    jeb.write(sum(score))
 
 ##Extendable Functions##
 
@@ -95,14 +138,35 @@ def update_score(points):
 def start_screen():
     pass
 
+lives = [1,1,1,1,1]
+lives_lost = []
 #Life Tracker
-def update_lives():
-    pass
-
+def update_lives(lives):
+    lives_lost.append(1)
+    life = sum(lives) - sum(lives_lost)
+    bob.dot(25,"white")
+    bob.write(life)
+    if life == 0:
+        game_over()
 #Game Over Screen
 def game_over():
-    pass
-
+    yes_no = ["Yes", "No"]
+    repeat = easy.choicebox("Do you wish to play again?","", yes_no)
+    if yes_no == "Yes":
+        for food in foods:
+            food.clear()
+        jeb.clear()
+        bob.clear()
+        jeff.clrear()
+        create_player()
+        screen.onkey(left , "a")
+        screen.onkey(right , 'd')
+        create_collectables()
+        setup_score()
+        setup_lives()
+        screen.listen()
+    else:
+        exit(0)
 
 #####Setup Function Calls#####
 #Use this section to call any core functions that are only called once and help to setup the turtle/game environment
@@ -110,9 +174,11 @@ create_player()
 screen.onkey(left , "a")
 screen.onkey(right , 'd')
 create_collectables()
+setup_score()
+setup_lives()
 screen.listen()
 
 #####Core Game Loop#####
 #Use this while loop to create your game loop, define logic and call above functions
-for x in range(100):
-   check_horizontal_bounds()
+# for x in range(100):
+   # check_horizontal_bounds()
