@@ -16,6 +16,8 @@ import random as r
 jeff = t.Turtle()
 jeb = t.Turtle()
 bob = t.Turtle()
+herbert = t.Turtle()
+ht()
 
 x = 5
 
@@ -30,6 +32,7 @@ foods = [t1,t2,t3,t4]
 score = []
 lives_lost = []
 powerups = []
+powerups_used = []
 #####Functions#####
 
 ##Core Game Functions##
@@ -59,6 +62,13 @@ def create_player():
     jeff.penup()
     jeff.goto(0,-170)
 
+def powerups_disply():
+    herbert.ht()
+    herbert.penup()
+    herbert.goto(150,150)
+    herbert.write("powerups :")
+    herbert.write(5-sum(powerups_used))
+
 #Move Player Left
 #Move player left in response to arrow key
 def left():
@@ -69,17 +79,19 @@ def super_left():
     if sum(powerups)<5:
         jeff.backward(20)
         powerups.append(1)
+        pwerups_used.append(1)
 
 #Move Player Right
 #Move player right in response to arrow key
 def right():
     jeff.forward(7)
-    check_horizontal_boundds()
+    check_horizontal_bounds()
 
 def super_right():
     if sum(powerups)<5:
         jeff.forward(20)
         powerups.append(1)
+        pwerups_used.append(1)
         
 #Check Player Screen Bounds (Horizontal)
 #Check to see if the player is within the vertical bounds, if not set the player to the bound
@@ -189,6 +201,7 @@ def game_over():
 #Use this section to call any core functions that are only called once and help to setup the turtle/game environment
 start_screen()
 create_player()
+powerups_disply()
 screen.onkey(left , "a")
 screen.onkey(right , 'd')
 screen.onkey(super_left , "Left")
