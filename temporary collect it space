@@ -17,7 +17,6 @@ jeff = t.Turtle()
 jeb = t.Turtle()
 bob = t.Turtle()
 herbert = t.Turtle()
-ht()
 
 x = 5
 
@@ -42,6 +41,7 @@ powerups_used = []
 def setup_score():
     jeb.penup()
     jeb.ht()
+    jeb.speed(0)
     jeb.goto(-175,-170)
     jeb.write("score : ")
     jeb.goto(-165,-185)
@@ -50,6 +50,7 @@ def setup_score():
 def setup_lives():
     bob.penup()
     bob.ht()
+    bob.speed(0)
     bob.goto(150,-170)
     bob.write("Lives : ")
     bob.goto(160,-185)
@@ -60,14 +61,19 @@ def setup_lives():
 def create_player():
     jeff.color("orange")
     jeff.penup()
+    jeff.speed(0)
     jeff.goto(0,-170)
+    jeff.speed(3)
 
-def powerups_disply():
+def powerups_setup():
     herbert.ht()
     herbert.penup()
-    herbert.goto(150,150)
+    herbert.speed(0)
+    herbert.goto(140,150)
     herbert.write("powerups :")
-    herbert.write(5-sum(powerups_used))
+    herbert.goto(160,135)
+    herbert.write(5)
+
 
 #Move Player Left
 #Move player left in response to arrow key
@@ -77,6 +83,7 @@ def left():
 
 def super_left():
     if sum(powerups)<5:
+        update_powerups()
         jeff.backward(20)
         powerups.append(1)
         pwerups_used.append(1)
@@ -89,10 +96,17 @@ def right():
 
 def super_right():
     if sum(powerups)<5:
+        update_powerups()
         jeff.forward(20)
         powerups.append(1)
         pwerups_used.append(1)
+       
         
+def update_powerups():
+    powerups_used.append(1)
+    herbert.dot(10,"white")
+    herbert.write(5-sum(powerups_used))
+
 #Check Player Screen Bounds (Horizontal)
 #Check to see if the player is within the vertical bounds, if not set the player to the bound
 def check_horizontal_bounds():
@@ -108,11 +122,13 @@ def create_collectables():
         food.ht()
         food.setheading(-90)
         food.penup()
+        food.speed(0)
         rand_y = r.randrange(200,400)
         rand_x = r.randrange(-165,165)
         food.goto(rand_x,rand_y)
         food.showturtle()
         food.color("lime green")
+        food.speed(2)
 
 #Move Collectable 
 #Go through your list of collectables and move each item
@@ -199,16 +215,17 @@ def game_over():
 
 #####Setup Function Calls#####
 #Use this section to call any core functions that are only called once and help to setup the turtle/game environment
+ht()
 start_screen()
 create_player()
-powerups_disply()
+powerups_setup()
+setup_score()
+setup_lives()
+create_collectables()
 screen.onkey(left , "a")
 screen.onkey(right , 'd')
 screen.onkey(super_left , "Left")
 screen.onkey(super_right , 'Right')
-create_collectables()
-setup_score()
-setup_lives()
 screen.listen()
 
 #####Core Game Loop#####
