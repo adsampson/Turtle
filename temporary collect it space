@@ -92,6 +92,7 @@ def super_left():
     if sum(powerups_used)<5:
         update_powerups()
         jeff.backward(25)
+        check_horizontal_bounds()
 
 #Move Player Right
 #Move player right in response to arrow key
@@ -104,6 +105,7 @@ def super_right():
     if sum(powerups_used)<5:
         update_powerups()
         jeff.forward(25)
+        check_horizontal_bounds()
 
 #This will update the counter on the top right of the screen
 def update_powerups():
@@ -172,7 +174,7 @@ def check_vertical_bounds_food():
         if int(food.ycor())<=-200:
             food.ht()
             rand_y = r.randrange(200,600)
-            rand_x = r.randrange(-155,155)
+            rand_x = r.randrange(-145,145)
             update_lives()
             food.speed(0)
             food.goto(rand_x,rand_y)
@@ -185,7 +187,7 @@ def check_vertical_bounds_poison():
         if int(poison.ycor())<=-200:
             poison.ht()
             rand_y = r.randrange(275,700)
-            rand_x = r.randrange(-165,170)
+            rand_x = r.randrange(-145,140)
             poison.speed(0)
             poison.goto(rand_x,rand_y)
             poison.speed(2)
@@ -196,7 +198,7 @@ def check_vertical_bounds_poison():
 #Must pass the item in as an arguement
 def eat_food():
     for food in foods:
-        if int(food.distance(jeff))<=7:
+        if int(food.distance(jeff))<=8:
             update_score()
             food.ht()
             rand_y = r.randrange(200,500)
@@ -209,7 +211,7 @@ def eat_food():
 #Checks to see if poison is eaten
 def eat_poison():
     for poison in poisons:
-        if int(poison.distance(jeff))<=7:
+        if int(poison.distance(jeff))<=8:
             decrease_score()
             poison.ht()
             rand_y = r.randrange(200,500)
@@ -223,31 +225,29 @@ def eat_poison():
 #If contact between collectable and player is made, update global score
 def update_score():
     score.append(100)
-    jeb.dot(15, "white")
+    jeb.dot(15.5,"white")
     jeb.write(sum(score))
 
 #If poison is eaten it will decrease the score
 def decrease_score():
     score.append(-50)
-    jeb.dot(15,"white")
+    jeb.dot(16,"white")
     jeb.write(sum(score))
-
-##Extendable Functions##
-
-#Intro Screen
-def start_screen():
-    print("Welsome to the hit new game 'collect it'. You play as the organge arrow and you move by using the 'a' and 'd' to go left and right to eat the green food. If you miss one you will lose a    life and you only have 5.")
 
 #Life Tracker
 def update_lives():
     lives_lost.append(1)
     life = x - sum(lives_lost)
-    bob.dot(15,"white")
+    bob.dot(20,"white")
     bob.write(life)
     if life == 0:
         game_over()
-        
+##Extendable Functions##
 
+#Intro Screen
+def start_screen():
+    print("Welsome to the hit new game 'collect it'. You play as the organge arrow and you move by using the 'a' and 'd' to go left and right to eat the green food. If you miss one you will lose a    life and you only have 5.")
+    
 #Game Over Screen
 def game_over():
     repeat = input("You died. Do you wish to play again? ")
@@ -264,11 +264,11 @@ def game_over():
         setup_powerups()
         screen.listen()
     else:
-        exit(0)
+        exit()
 
 #####Setup Function Calls#####
 #Use this section to call any core functions that are only called once and help to setup the turtle/game environment
-
+ht()
 start_screen()
 create_player()
 setup_powerups()
