@@ -12,11 +12,16 @@
 #Import Libraries
 import turtle as t
 import random as r
+import time as ti
 #Global Variable
 jeff = t.Turtle()
 jeb = t.Turtle()
 bob = t.Turtle()
 herbert = t.Turtle()
+coby = t.Turtle()
+
+FONTSIZE = 10
+FONT = ('Arial', FONTSIZE, 'normal')
 
 #The food
 t1 = t.Turtle()
@@ -37,14 +42,32 @@ poisons = [p1,p2,p3]
 score = []
 lives_lost = []
 powerups_used = []
+start_game = []
 #####Functions#####
 
 ##Core Game Functions##
 
 #Intro Screen
 def start_screen():
-    print("Welcome to the hit new game 'collect it'. You play as the organge arrow and you move by using the 'a' and 'd' to go left and right to eat the green food. If you miss one you will lose a    life and you only have 5.")
-    
+    coby.ht()
+    coby.penup()
+    coby.goto(-190,85)
+    coby.write("Welcome to the hit new game 'collect it'.",font=FONT)
+    coby.goto(-190,70)
+    coby.write("You play as the organge arrow and you move by using the 'a' and 'd'",font=FONT)
+    coby.goto(-190,55)
+    coby.write("You can also use the left and right arrows to 'worp' 5 times the normal.", font=FONT)
+    coby.goto(-190,40)
+    coby.write("to go left and right to eat the green food. Don't eat the red poison or you will loose points.",font=FONT) 
+    coby.goto(-190,25)
+    coby.write("If you miss one green food you will lose a life and you only have 5.", font=FONT)
+    coby.goto(-190,10)
+    coby.write("Press space to start.", font=FONT)
+
+def clear_start_screen():
+    start_game.append(1)
+    coby.clear()
+
 #Create Score
 #Create the score field on the top of the screen
 def setup_score():
@@ -278,7 +301,7 @@ def game_over():
 
 #####Setup Function Calls#####
 #Use this section to call any core functions that are only called once and help to setup the turtle/game environment
-ht()
+# ht()
 start_screen()
 setup_player()
 setup_powerups()
@@ -290,10 +313,11 @@ screen.onkey(left , "a")
 screen.onkey(right , 'd')
 screen.onkey(super_left , "Left")
 screen.onkey(super_right , 'Right')
+screen.onkey(clear_start_screen , "f")
 screen.listen()
 
 #####Core Game Loop#####
 #Use this while loop to create your game loop, define logic and call above functions
-while True:
+while sum(start_game) == 1:
     move_food()
     move_poison()
