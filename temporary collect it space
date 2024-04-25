@@ -18,20 +18,20 @@ jeb = t.Turtle()
 bob = t.Turtle()
 herbert = t.Turtle()
 
-x = 5
-
+#The food
 t1 = t.Turtle()
 t2 = t.Turtle()
 t3 = t.Turtle()
 t4 = t.Turtle()
 
+#The poison
 p1 = t.Turtle()
 p2 = t.Turtle()
 p3 = t.Turtle()
 
 screen = t.Screen()
-#Lists
 
+#Lists
 foods = [t1,t2,t3,t4]
 poisons = [p1,p2,p3]
 score = []
@@ -41,6 +41,10 @@ powerups_used = []
 
 ##Core Game Functions##
 
+#Intro Screen
+def start_screen():
+    print("Welcome to the hit new game 'collect it'. You play as the organge arrow and you move by using the 'a' and 'd' to go left and right to eat the green food. If you miss one you will lose a    life and you only have 5.")
+    
 #Create Score
 #Create the score field on the top of the screen
 def setup_score():
@@ -74,55 +78,15 @@ def setup_powerups():
     
 #Create Player
 #Create and draw player onto the screen in starting position
-def create_player():
+def setup_player():
     jeff.color("orange")
     jeff.penup()
     jeff.speed(0)
     jeff.goto(0,-170)
     jeff.speed(3)
 
-#Move Player Left
-#Move player left in response to arrow key
-def left():
-    jeff.backward(6)
-    check_horizontal_bounds()
-
-#Move player left more the the normal move commmand 
-def super_left():
-    if sum(powerups_used)<5:
-        update_powerups()
-        jeff.backward(25)
-        check_horizontal_bounds()
-
-#Move Player Right
-#Move player right in response to arrow key
-def right():
-    jeff.forward(6)
-    check_horizontal_bounds()
-
-#Move player right more the the normal move commmand 
-def super_right():
-    if sum(powerups_used)<5:
-        update_powerups()
-        jeff.forward(25)
-        check_horizontal_bounds()
-
-#This will update the counter on the top right of the screen
-def update_powerups():
-    powerups_used.append(1)
-    herbert.dot(10,"white")
-    herbert.write(5-sum(powerups_used))
-
-#Check Player Screen Bounds (Horizontal)
-#Check to see if the player is within the vertical bounds, if not set the player to the bound
-def check_horizontal_bounds():
-    if int(jeff.xcor())<-155:
-        jeff.goto(-155,-170)
-    if int(jeff.xcor())>160:
-        jeff.goto(160,-170)
-
-#Create Collectable
-#Use a for loop to create and store your collectables into a list
+#Create food
+#Use a for loop to store your food into a list
 def create_food():
     for food in foods:
         food.ht()
@@ -134,8 +98,9 @@ def create_food():
         food.goto(rand_x,rand_y)
         food.showturtle()
         food.color("lime green")
-        food.speed(2)
+        food.speed(3)
 
+#Create poison, uses the list poisons
 def create_poison():
     for poison in poisons:
         poison.ht()
@@ -143,85 +108,133 @@ def create_poison():
         poison.penup()
         poison.speed(0)
         rand_y = r.randrange(225,600)
-        rand_x = r.randrange(-165,170)
+        rand_x = r.randrange(-155,155)
         poison.goto(rand_x,rand_y)
         poison.showturtle()
         poison.color("red")
         poison.speed(2)
-    
+
+#Move Player Left
+#Move player left in response to arrow key
+def left():
+    jeff.backward(5)
+    check_horizontal_bounds()
+
+#Move Player Right
+#Move player right in response to arrow key
+def right():
+    jeff.forward(5)
+    check_horizontal_bounds()
+
+#Move player left more the the normal move commmand 
+def super_left():
+    if sum(powerups_used)<5:
+        jeff.speed(0)
+        update_powerups()
+        jeff.backward(25)
+        jeff.speed(3)
+        check_horizontal_bounds()
+
+#Move player right more the the normal move commmand 
+def super_right():
+    if sum(powerups_used)<5:
+        update_powerups()
+        jeff.speed(0)
+        jeff.forward(25)
+        jeff.speed(3)
+        check_horizontal_bounds()
+
 #Move food 
 #Go through your list of foods and move each item
 def move_food():
     for food in foods:
-        dist = r.randrange(2,4)
+        dist = r.randrange(3,5)
         food.forward(dist)
-        check_vertical_bounds_food()
-    eat_food()
+        check_vertical_bounds_food(food)
+        eat_food(food)
 
 #Moves each poison from list of poisons       
 def move_poison():
     for poison in poisons:
         dist = r.randrange(2,4)
         poison.forward(dist)
-        check_vertical_bounds_poison()
-    eat_poison()
+        check_vertical_bounds_poison(poison)
+        eat_poison(poison)
+
+#Check Player Screen Bounds (Horizontal)
+#Check to see if the player is within the vertical bounds, if not set the player to the bound
+def check_horizontal_bounds():
+    if int(jeff.xcor())<-155:
+        jeff.goto(-155,-170)
+    if int(jeff.xcor())>160:
+        jeff.goto(160,-170)
 
 #Check Collectable Screen Bounds (Vertical)
 #Check to see if food is below vertical bounds, if so move back to the top
 #Must pass the item in as an arguement
-def check_vertical_bounds_food():
-    for food in foods:
-        if int(food.ycor())<=-200:
-            food.ht()
-            rand_y = r.randrange(200,600)
-            rand_x = r.randrange(-145,145)
-            update_lives()
-            food.speed(0)
-            food.goto(rand_x,rand_y)
-            food.speed(2)
-            food.showturtle()
+def check_vertical_bounds_food(food):
+    y_cor = food.ycor()
+    if y_cor <= -210:
+        food.ht()
+        rand_y = r.randrange(200,600)
+        rand_x = r.randrange(-145,145)
+        update_lives()
+        food.speed(0)
+        food.goto(rand_x,rand_y)
+        food.speed(3)
+        food.showturtle()
+        return 
+    else:
+        return
 
 #checks to see if the poison is below vertical limit if so moves back to top
-def check_vertical_bounds_poison():
-    for poison in poisons:
-        if int(poison.ycor())<=-200:
-            poison.ht()
-            rand_y = r.randrange(275,700)
-            rand_x = r.randrange(-145,140)
-            poison.speed(0)
-            poison.goto(rand_x,rand_y)
-            poison.speed(2)
-            poison.showturtle()
-            
+def check_vertical_bounds_poison(poison):
+    y_cor = poison.ycor()
+    if int(poison.ycor())<=-210:
+        poison.ht()
+        rand_y = r.randrange(275,700)
+        rand_x = r.randrange(-145,140)
+        poison.speed(0)
+        poison.goto(rand_x,rand_y)
+        poison.speed(2)
+        poison.showturtle()
+        return
+    else:
+        return
+
 #Check Player Catch Collectable
 #Pass in a collectable item from a list and determine if it is in contact/proximity with the player
 #Must pass the item in as an arguement
-def eat_food():
-    for food in foods:
-        if int(food.distance(jeff))<=8:
-            update_score()
-            food.ht()
-            rand_y = r.randrange(200,500)
-            rand_x = r.randrange(-185,185)
-            food.speed(0)
-            food.goto(rand_x,rand_y)
-            food.speed(2)
-            food.showturtle()
+def eat_food(food):
+    if int(food.distance(jeff))<=8:
+        update_score()
+        food.ht()
+        rand_y = r.randrange(200,500)
+        rand_x = r.randrange(-185,185)
+        food.speed(0)
+        food.goto(rand_x,rand_y)
+        food.speed(3)
+        food.showturtle()
 
 #Checks to see if poison is eaten
-def eat_poison():
-    for poison in poisons:
-        if int(poison.distance(jeff))<=8:
-            decrease_score()
-            poison.ht()
-            rand_y = r.randrange(200,500)
-            rand_x = r.randrange(-185,185)
-            poison.speed(0)
-            poison.goto(rand_x,rand_y)
-            poison.speed(2)
-            poison.showturtle()
+def eat_poison(poison):
+    if int(poison.distance(jeff))<=8:
+        decrease_score()
+        poison.ht()
+        rand_y = r.randrange(200,500)
+        rand_x = r.randrange(-185,185)
+        poison.speed(0)
+        poison.goto(rand_x,rand_y)
+        poison.speed(3)
+        poison.showturtle()
 
-#Update Score
+#This will update the counter on the top right of the screen
+def update_powerups():
+    powerups_used.append(1)
+    herbert.dot(10,"white")
+    herbert.write(5-sum(powerups_used))
+
+#Update Score (could use argument to make lives go up or down)
 #If contact between collectable and player is made, update global score
 def update_score():
     score.append(100)
@@ -237,17 +250,12 @@ def decrease_score():
 #Life Tracker
 def update_lives():
     lives_lost.append(1)
-    life = x - sum(lives_lost)
-    bob.dot(20,"white")
+    life = 5 - sum(lives_lost)
+    bob.dot(15,"white")
     bob.write(life)
     if life == 0:
         game_over()
-##Extendable Functions##
 
-#Intro Screen
-def start_screen():
-    print("Welsome to the hit new game 'collect it'. You play as the organge arrow and you move by using the 'a' and 'd' to go left and right to eat the green food. If you miss one you will lose a    life and you only have 5.")
-    
 #Game Over Screen
 def game_over():
     repeat = input("You died. Do you wish to play again? ")
@@ -256,7 +264,7 @@ def game_over():
         bob.clear()
         herbert.clear()
         lives_lost.clear()
-        create_player()
+        setup_player()
         create_food()
         create_poison()
         setup_score()
@@ -266,11 +274,13 @@ def game_over():
     else:
         exit()
 
+##Extendable Functions##
+
 #####Setup Function Calls#####
 #Use this section to call any core functions that are only called once and help to setup the turtle/game environment
 ht()
 start_screen()
-create_player()
+setup_player()
 setup_powerups()
 setup_score()
 setup_lives()
