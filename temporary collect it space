@@ -13,6 +13,7 @@
 import turtle as t
 import random as r
 import time as ti
+
 #Global Variable
 jeff = t.Turtle()
 jeb = t.Turtle()
@@ -23,11 +24,12 @@ coby = t.Turtle()
 FONTSIZE = 10
 FONT = ('Arial', FONTSIZE, 'normal')
 
+x = False
 #The food
-t1 = t.Turtle()
-t2 = t.Turtle()
-t3 = t.Turtle()
-t4 = t.Turtle()
+f1 = t.Turtle()
+f2 = t.Turtle()
+f3 = t.Turtle()
+f4 = t.Turtle()
 
 #The poison
 p1 = t.Turtle()
@@ -37,12 +39,11 @@ p3 = t.Turtle()
 screen = t.Screen()
 
 #Lists
-foods = [t1,t2,t3,t4]
+foods = [f1,f2,f3,f4]
 poisons = [p1,p2,p3]
 score = []
 lives_lost = []
 powerups_used = []
-start_game = []
 #####Functions#####
 
 ##Core Game Functions##
@@ -65,7 +66,8 @@ def start_screen():
     coby.write("Press space to start.", font=FONT)
 
 def clear_start_screen():
-    start_game.append(1)
+    global x
+    x = True
     coby.clear()
 
 #Create Score
@@ -318,6 +320,7 @@ screen.listen()
 
 #####Core Game Loop#####
 #Use this while loop to create your game loop, define logic and call above functions
-while sum(start_game) == 1:
-    move_food()
-    move_poison()
+if x == True:
+    while True:
+        move_food()
+        move_poison()
