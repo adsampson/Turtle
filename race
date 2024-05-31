@@ -1,153 +1,92 @@
-##############
-#Turtle - Collect It Game
-#Name
-#Date
-#
-#Task: To create a simple game where the player controls a turtle that can move left and right while trying to collect falling items.
-##############
-
-#####Setup#####
-#Use this section to organize global data
-
-#Import Libraries
-import turtle as t
-import time
+import turtle as  t
 import random as r
-#Global Variable
-jeff = t.Turtle()
-jeb = t.Turtle()
-bob = t.Turtle()
 
-t1 = t.Turtle()
-t2 = t.Turtle()
-t3 = t.Turtle()
-t4 = t.Turtle()
 screen = t.Screen()
 
-#Lists
-foods = [t1,t2,t3,t4]
-score = []
-#####Functions#####
+t1 = t.Turtle()
+t1.color("red")
+t1.penup()
 
-##Core Game Functions##
+t2 = t.Turtle()
+t2.color("blue")
+t2.penup()
 
-#Create Score
-#Create the score field on the top of the screen
-def setup_score():
-    jeb.penup()
-    jeb.ht()
-    jeb.goto(-210,-10)
-    jeb.write("score : ")
-    jeb.goto(-200,-25)
-    jeb.write(0)
+t3 = t.Turtle()
+t3.color("orange")
+t3.penup()
 
-#Create Player
-#Create and draw player onto the screen in starting position
-def create_player():
-    jeff.color("orange")
-    jeff.penup()
-#Move Player Left
-#Move player left in response to arrow key
-def left():
-    jeff.backward(7)
-    check_horizontal_bounds()
-    move_collectable()
+t4 = t.Turtle()
+t4.color("light green")
+t4.penup()
 
-#Move Player Right
-#Move player right in response to arrow key
-def right():
-    jeff.forward(7)
-    check_horizontal_bounds()
-    move_collectable()
+t5 = t.Turtle()
+t5.color("pink")
+t5.penup()
 
-#Check Player Screen Bounds (Horizontal)
-#Check to see if the player is within the vertical bounds, if not set the player to the bound
-def check_horizontal_bounds():
-    if int(jeff.xcor())<-165:
-        jeff.goto(-165,0)
-    if int(jeff.xcor())>170:
-        jeff.goto(170,0)
+def setup():
+    t1.goto(-250, 200)
+    t1.write("start")
+    t1.pendown()
+    t1.goto(-250, -200)
+    t1.penup()
+    t1.goto(250, 200)
+    t1.write("finish")
+    t1.pendown()
+    t1.goto(250, -200)
+    t1.pendown()
+    t1.penup()
+    t1.goto(-250, 100)
+    t1.pendown()
+    
+    t2.goto(-250, 200)
+    t2.pendown()
+    t3.goto(-250, -200)
+    t3.pendown()
+    t4.goto(-250, 0)
+    t4.pendown()
+    t5.goto(-250, -100)
+    t5.pendown()
+    race()
 
-#Create Collectable
-#Use a for loop to create and store your collectables into a list
-def create_collectables():
-    for food in foods:
-        food.ht()
-        food.setheading(-90)
-        food.penup()
-        rand_y = r.randrange(200,250)
-        rand_x = r.randrange(-185,185)
-        food.goto(rand_x,rand_y)
-        food.showturtle()
-        food.color("lime green")
+racers = [t1, t2, t3, t4, t5]  
 
-#Move Collectable 
-#Go through your list of collectables and move each item
-def move_collectable():
-    for food in foods:
-        dist = r.randrange(3,5)
-        food.forward(dist)
-        check_vertical_bounds()
-        check_collectable()
+def race():
+    while True:        
+        for racer in racers:
+            if racer.xcor()<=250:
+                dist = r.randrange(0,75)
+                racer.forward(dist)
+                winner(racer)
+            else:
+                you_win(racer)
 
-#Check Collectable Screen Bounds (Vertical)
-#Check to see if a falling item is below vertical bounds, if so move back to the top
-#Must pass the item in as an arguement
-def check_vertical_bounds():
-    for food in foods:
-        if int(food.ycor())<=-30:
-            food.ht()
-            rand_y = r.randrange(200,350)
-            rand_x = r.randrange(-165,170)
-            food.goto(rand_x,rand_y)
-            food.showturtle()
-        
+def winner(racer):
+    if racer.xcor() >=250:
+        for x in range(6):
+            racer.speed(2)
+            racer.penup()
+            rand_forward = r.randrange(15,25)
+            rand_angle = r.randrange(35,55)
+            racer.left(rand_angle)
+            racer.forward(rand_forward)
+            racer.dot(10)
+            racer.backward(rand_forward)
+        you_win(racer)
+    else:
+        return
+    
+def you_win(racer):
+    racer.write("I win")
+    restart()
 
-#Check Player Catch Collectable
-#Pass in a collectable item from a list and determine if it is in contact/proximity with the player
-#Must pass the item in as an arguement
-def check_collectable():
-    for food in foods:
-        if int(food.distance(jeff))<=5:
-            update_score()
-            food.ht()
-            rand_y = r.randrange(200,350)
-            rand_x = r.randrange(-185,185)
-            food.goto(rand_x,rand_y)
-            food.showturtle()
-
-#Update Score
-#If contact between collectable and player is made, update global score
-def update_score():
-    score.append(1)
-    jeb.dot(30, "white")
-    jeb.write(sum(score))
-
-##Extendable Functions##
-
-#Intro Screen
-def start_screen():
-    pass
-
-#Life Tracker
-def update_lives():
-    pass
-
-#Game Over Screen
-def game_over():
-    pass
-
-
-#####Setup Function Calls#####
-#Use this section to call any core functions that are only called once and help to setup the turtle/game environment
-create_player()
-screen.onkey(left , "a")
-screen.onkey(right , 'd')
-create_collectables()
-setup_score()
-screen.listen()
-
-#####Core Game Loop#####
-#Use this while loop to create your game loop, define logic and call above functions
-for x in range(100):
-   check_horizontal_bounds()
+def restart():
+    yes_no = input("Do you want to go again? ")
+    if yes_no.lower() == "yes":
+        for racer in racers:
+            racer.penup()
+            racer.setheading(0)
+            racer.clear()
+        setup()
+    else:
+        exit(0)
+setup()
